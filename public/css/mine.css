@@ -1,0 +1,33 @@
+.formWrap{
+	padding-top: 5%;
+	padding-bottom: 5%;
+}
+
+
+
+
+
+#tip{
+	line-height: 1.2;
+}
+
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF;
+            -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+        	border-radius: 30px;
+            background: #CCC;
+            -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #AAA;
+        }
+        ::-webkit-scrollbar-thumb:active {
+            background: #888;
+            -webkit-box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3);
+        }
