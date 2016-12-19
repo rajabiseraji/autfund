@@ -114,30 +114,44 @@ class TablesController extends Controller
    		$res =  DB::table('research_area')->get();
     	$c = DB::table('funding_org')->pluck('funding_org_country');
     	$tags = DB::table('tags')->orderByRaw("cast(tag_real as unsigned) asc")->get();
-   		$arr = DB::table('funds')->where('funds.fund_id', '=', $tableID);
+      $arr = DB::table('funds')->where('funds.fund_id', '=', $tableID);
+   		$arrRef = DB::table('funds')->where('funds.fund_id', '=', $tableID);
       $tmpRes = $arr->get();
       $tmp = $arr->join('fund_resarea', 'fund_resarea.fund_id', '=', 'funds.fund_id');
-      if(isset($tmp->get()[0]))
-        $arr = $tmp;
+      if(isset($tmp->get()[0])){
+        $arrRef = clone $tmp;
+        $arr = clone $tmp;
+      }
       $tmp = $arr->join('research_area', 'fund_resarea.research_area_code', '=', 'research_area.research_code');
-      if(isset($tmp->get()[0]))
-        $arr = $tmp;
+      if(isset($tmp->get()[0])){
+        $arrRef = clone $tmp;
+        $arr = clone $tmp;
+      }
       $tmp = $arr->join('funding_org', 'funding_org.funding_org_id', '=', 'funding_org_code');
       // return $tmp->get
-       if(isset($tmp->get()[0]))
-        $arr = $tmp;
+       if(isset($tmp->get()[0])){
+        $arrRef = clone $tmp;
+        $arr = clone $tmp;
+       }
       $tmp = $arr->join('fund_tag', 'fund_tag.fund_id', '=', 'funds.fund_id');
-      if(isset($tmp->get()[0]))
-        $arr = $tmp;
+      if(isset($tmp->get()[0])){
+        $arrRef = clone $tmp;
+        $arr = clone $tmp;
+      }
       $tmp = $arr->join('tags', 'fund_tag.tag_id', '=', 'tags.tag_id');
-      if(isset($tmp->get()[0]))
-        $arr = $tmp;
+      if(isset($tmp->get()[0])){
+        $arrRef = clone $tmp;
+        $arr = clone $tmp;
+      }
       $tmp = $arr->join('id_map', 'id_map.fund_id', '=', 'funds.fund_id');
-      if(isset($tmp->get()[0]))         
-        $arr = $tmp->get();
-      else
-        $arr = $tmpRes;
+      if(isset($tmp->get()[0])){
+        $arrRef = $tmp;
+        $arr = clone $tmp;
+      }         
+      // return $arr->get();
       // return $arr;
+      $arr = $arrRef->get();
+      // return $arr->get();
    		return view('table')->with(compact('arr', 'res', 'c', 'tags', 'funds'));
    }
 
@@ -172,7 +186,8 @@ class TablesController extends Controller
         DB::table('funding_org')->insert(['funding_org_name'=>$r->fund_org, 'funding_org_country'=>$f['country']]);
       
       $forgs = DB::table('funding_org')->where('funding_org_name', '=', $r->fund_org)->get();
-      $forgID = $forgs[0]->funding_org_id;
+      if(isset($forgs[0]))
+        $forgID = $forgs[0]->funding_org_id;
 
       // return $f;
       $result = DB::table('funds')->where('fund_id', '=', $f['fund_id']);

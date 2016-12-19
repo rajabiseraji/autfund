@@ -43,6 +43,8 @@
 					 <div class="row">
 					 	 <div id="fund_related_id_parent" class="input-field col s12">
 				           <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+							<option disabled="">Choose The related funds</option>
+
 					      @foreach($fund_rel_id as $fr)
 					      	<option value="{{ $fr->fund_id }}">{{ ucfirst(trans($fr->fund_name)) }}</option>
 

@@ -38,6 +38,7 @@
 					 <div class="row">
 					 	 <div id="fund_related_id_parent" class="input-field col s12">
 				           <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+				           <option disabled="">Choose The related funds</option>
 					      @foreach($funds as $fund)
 					      	<option value="{{ $fund->fund_id }}" 
 					      		{{-- @foreach($fund_rel_id as $fr) --}}

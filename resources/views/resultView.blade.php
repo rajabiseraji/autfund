@@ -12,10 +12,12 @@
 
 @section('board')
 
+	@if(count($result) == 0)
+		<h2 class="center black-text">Your search didn't return any results! Please go <a href="/tables">back</a></h2>		
+	@endif
 
-	<ul class="collapsible" data-collapsible="accordion">
+		<ul class="collapsible" data-collapsible="accordion">
         
-
 	@foreach($result as $r)
 
 		  <li>
