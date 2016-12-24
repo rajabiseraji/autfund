@@ -42,9 +42,24 @@ $('#addC').on('click', function(event) {
 $('#insResArea').on('click', function(event) {
 	event.preventDefault();
 	var tmp = $('<option></option>');
-	tmp.attr('value', $('#resAreaCode').val());
+	tmp.attr('value', $('#resAreaTitle').val());
 	tmp.text($('#resAreaTitle').val());
 	tmp.appendTo('#resSelect');
+	$('select').material_select();
+});
+
+$('form').keypress(function(e) {
+    if(e.which == 13) {
+        e.preventDefault();
+    }
+});
+
+$('#insFundOrg').on('click', function(event) {
+	event.preventDefault();
+	var tmp = $('<option></option>');
+	tmp.attr('value', $('#fundingOrgName').val());
+	tmp.text($('#fundingOrgName').val());
+	tmp.appendTo('#fundSelect');
 	$('select').material_select();
 });
 

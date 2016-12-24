@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 class TablesInsertController extends Controller
 {
     function show(){
+      $orgs = DB::table('funding_org')->get();
     	$fund_rel_id = DB::table('funds')->get();
     	$m = array('m' => 'insert');
     	$res =  DB::table('research_area')->get();
-    	$country = DB::table('funding_org')->pluck('funding_org_country');
+    	$country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
     	$tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
-    	return view('form')->with(compact('res', 'country', 'tags', 'm', 'fund_rel_id'));
+    	return view('form')->with(compact('res', 'country', 'tags', 'm', 'fund_rel_id', 'orgs'));
     }
 
     function insert(Request $r){
@@ -55,7 +56,9 @@ class TablesInsertController extends Controller
               		$forgs = DB::table('funding_org')->where('funding_org_name', '=', $r->fund_org)->get();				      
 				      if(empty($forgs))
 				        DB::table('funding_org')->insert(['funding_org_name'=>$r->fund_org, 'funding_org_country'=>$f['country']]);
-				      
+              else if($forgs[0]->funding_org_country != $f['country'])
+                DB::table('funding_org')->insert(['funding_org_name'=>$r->fund_org, 'funding_org_country'=>$f['country']]);
+
 				      $forgs = DB::table('funding_org')->where('funding_org_name', '=', $r->fund_org)->get();
 				      $forgID = $forgs[0]->funding_org_id;
                   	  $updateWhat[$key] = $forgID;
@@ -81,14 +84,27 @@ class TablesInsertController extends Controller
         DB::table('id_map')->insert(['fund_id'=>$f['fund_id'], 'related_id'=>$in]);
       }
 
-      if(!empty($f['res']))
-   		foreach ($f['res'] as $in) {
-   			DB::table('fund_resarea')->insert(['fund_id'=>$f['fund_id'], 'research_area_code'=>$in]);
-   		}
 
-   		if(!empty($r->resAreaTitle)){
-   			DB::table('research_area')->insert(['research_title'=>$r->resAreaTitle]);
-   		}
+      $areas = DB::table('research_area')->get(['research_title']);
+      foreach($f['res'] as $ff){
+        $tmpp = false;
+        foreach ($areas as $ar) {
+          if($ar->research_title == $ff)
+            {$tmpp = true; break;}
+        }
+        if(!$tmpp)
+          DB::table('research_area')->insert(['research_title'=>$ff]);
+      }
+            $areas = DB::table('research_area')->get();
+
+      if(!empty($f['res']))
+      foreach($f['res'] as $in) {
+        foreach ($areas as $row) {
+          if($in == $row->research_title)
+            DB::table('fund_resarea')->insert(['fund_id'=>$f['fund_id'], 'research_area_code'=>$row->research_code]);
+        }
+      }
+
 
    		if(!empty($f['tags']))
    		foreach ($f['tags'] as $tag) {

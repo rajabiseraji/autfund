@@ -28,7 +28,7 @@
 				          <label for="fund_name" class="">Fund Name</label>
 				        </div>
 				        <div id="fund_id_parent" class="input-field col s6">
-				          <input placeholder="" name="fund_id" id="fund_id" type="text" class="validate" value="{{ $arr[0]->fund_id}}">
+				          <input placeholder="" name="fund_id" id="fund_id" type="text" class="validate" value="{{ $arr[0]->fund_id}}" disabled>
 				          <label for="fund_id">Fund ID</label>
 				        </div>
 					 </div>
@@ -70,22 +70,72 @@
 
 
 
-
 				        <div id="fund_org_parent" class="input-field col s6">
-				          
-				          <input placeholder="" name="fund_org" id="fund_org" type="text" class="validate" 
-				          @if(isset($arr[0]->funding_org_name))
-				           value="{{ $arr[0]->funding_org_name}}"
-				          @endif
-				          ><label for="fund_org">Funding Organization</label>
-				        </div>
+
+					    <select id="fundSelect" name="fund_org" class="col 
+					    {{-- @if(isset($m['m'])) --}}
+					    s10"
+					    {{-- @else --}}
+					    {{-- s12" --}}
+					    {{-- @endif --}}
+					    >
+					      @foreach($orgs as $o)
+					      	<option value="{{ $o->funding_org_name }}" 
+					      	@if(isset($arr[0]->funding_org_name) )
+					      	 @if($arr[0]->funding_org_code == $o->funding_org_id)
+					      	 @if($arr[0]->funding_org_country == $o->funding_org_country)
+				             selected 
+				             @endif
+				             @endif
+				            @endif
+					      	>{{ ucfirst(trans($o->funding_org_name)) }} - {{ $o->funding_org_country }}</option>
+
+					      @endforeach
+					    </select>
+					    <label>Funding Org</label>
+					  		{{-- @if(isset($m['m'])) --}}
+						  		<div class="col s2">
+						    	<a class="btn-floating hoverable" href="#insertFundOrgModal"><i class="material-icons">add</i></a>
+						    	</div>
+					    	{{-- @endif --}}
+					  	</div>
+					{{-- </div> --}}
+						{{-- @if(isset($m['m'])) --}}
+							<!-- Modal Structure -->
+							  <div id="insertFundOrgModal" class="modal">
+							    <div class="modal-content">
+							      <h4>Add a new Fund Organization</h4>
+
+							      <div class="row">
+					          		 <div class="input-field col s6">
+							            <input id="fundingOrgName" name="fundingOrgName" type="text" class="validate" placeholder="A Name"></input>
+							            <label for="fundingOrgName">Funding Organization Name</label>
+					          		</div>
+								</div>
+
+							    </div>
+							    <div class="modal-footer">
+							    <div class="center-btn">
+							      <button id="insFundOrg" type="submit" class=" modal-action modal-close waves-effect waves-green btn-flat center">Insert</button>
+							      <a href="#" class=" modal-action modal-close waves-effect red waves-green btn-flat center">Cancel</a>
+							    </div>
+							    </div>
+							  </div>
+						{{-- @endif --}}
+
+
+
+
+
+
+
 
 
 				        <div id="fund_resArea_parent" class="input-field col s6">
 
-					    <select multiple name="resArea[]" class="col s10">
+					    <select id="resSelect" multiple name="resArea[]" class="col s10">
 					      @foreach($res as $r)
-					      		<option value="{{ $r->research_code }}" 
+					      		<option value="{{ $r->research_title }}" 
 					      		@foreach($arr as $tmp)
 					      		@if(isset($tmp->research_area_code))
 						      	@if($r->research_code == $tmp->research_area_code)
@@ -111,10 +161,10 @@
 							      <h4>Add a new research Area</h4>
 
 							      <div class="row">
-					          		 <div class="input-field col s6">
+					          		{{--  <div class="input-field col s6">
 							            <input id="resAreaCode" name="resAreaCode" type="number" class="validate" placeholder="A number"></input>
 							            <label for="resAreaCode">Reasearch area code</label>
-					          		</div>
+					          		</div> --}}
 						
 					          		 <div class="input-field col s6">
 							            <input id="resAreaTitle" name="resAreaTitle" type="text" class="validate" placeholder="A Title for this research area"></input>
@@ -125,7 +175,7 @@
 							    </div>
 							    <div class="modal-footer">
 							    <div class="center-btn">
-							      <button type="submit" class=" modal-action modal-close waves-effect waves-green btn-flat center">Insert</button>
+							      <button id="insResArea" type="submit" class=" modal-action modal-close waves-effect waves-green btn-flat center">Insert</button>
 							      <a href="#" class=" modal-action modal-close waves-effect red waves-green btn-flat center">Cancel</a>
 							    </div>
 							    </div>
@@ -133,20 +183,20 @@
 
 					{{-- <div class="row"> --}}
 						<div id="fund_country_parent" class="input-field col s10">
-				          <select id="fund_country" name="country" class="icons">
-					      <option value="" disabled selected>Choose your option</option>
+				          <select id="fund_country" name="fund_country" class="icons">
+					      {{-- <option value="" disabled selected>Choose your option</option> --}}
 					      
 					      @foreach($c as $cou)
 						      
-						      	<option value="{{ $cou }}" data-icon="{{ asset($c.'.jpg') }}" class="circle" 
+						      	<option value="{{ $cou->funding_org_country }}" class="circle" 
 						      @foreach($arr as $a)
 						      @if(isset($a->funding_org_country))
-						      @if($cou == $a->funding_org_country)
+						      @if($cou->funding_org_country == $a->funding_org_country)
 						      selected
 						      @endif
 						      @endif
 						      @endforeach
-						      >{{ $cou }}</option>
+						      >{{ $cou->funding_org_country }}</option>
 						      
 					      @endforeach
 

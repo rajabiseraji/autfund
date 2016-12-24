@@ -11,9 +11,10 @@ class TablesController extends Controller
       $m = []; 
     	$res =  DB::table('research_area')->get();
       $fund_rel_id = DB::table('funds')->get();
-    	$country = DB::table('funding_org')->pluck('funding_org_country');
+      $orgs = DB::table('funding_org')->get();
+    	$country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
     	$tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
-    	return view('form')->with(compact('res', 'country', 'tags', 'm', 'fund_rel_id'));
+    	return view('form')->with(compact('res', 'country', 'tags', 'm', 'fund_rel_id', 'orgs'));
     }
 
     public function search(Request $r){
@@ -112,7 +113,8 @@ class TablesController extends Controller
       //                                   ->get(); 
       $funds = DB::table('funds')->get(); 
    		$res =  DB::table('research_area')->get();
-    	$c = DB::table('funding_org')->pluck('funding_org_country');
+      $orgs = DB::table('funding_org')->get();
+    	$c = DB::table('funding_org')->distinct()->get(['funding_org_country']);
     	$tags = DB::table('tags')->orderByRaw("cast(tag_real as unsigned) asc")->get();
       $arr = DB::table('funds')->where('funds.fund_id', '=', $tableID);
    		$arrRef = DB::table('funds')->where('funds.fund_id', '=', $tableID);
@@ -152,7 +154,8 @@ class TablesController extends Controller
       // return $arr;
       $arr = $arrRef->get();
       // return $arr->get();
-   		return view('table')->with(compact('arr', 'res', 'c', 'tags', 'funds'));
+      
+   		return view('table')->with(compact('arr', 'res', 'c', 'tags', 'funds', 'orgs'));
    }
 
 
@@ -180,12 +183,18 @@ class TablesController extends Controller
       //     $resAreas = $r->resArea;
       // $tags = $r->tags;
         // $country = $r->fund_country; 
-      $forgs = DB::table('funding_org')->where('funding_org_name', '=', $r->fund_org)->get();
-      
-      if(empty($forgs))
+      $forgs = DB::table('funding_org')->where('funding_org_name', '=', $r->fund_org)
+                                        ->where('funding_org_country', '=', $f['country'])
+                                        ->get();
+      if(!isset($forgs[0]))
+        DB::table('funding_org')->insert(['funding_org_name'=>$r->fund_org, 'funding_org_country'=>$f['country']]);
+      else if($forgs[0]->funding_org_country != $f['country'])
         DB::table('funding_org')->insert(['funding_org_name'=>$r->fund_org, 'funding_org_country'=>$f['country']]);
       
-      $forgs = DB::table('funding_org')->where('funding_org_name', '=', $r->fund_org)->get();
+
+      $forgs = DB::table('funding_org')->where('funding_org_name', '=', $r->fund_org)
+                                      ->where('funding_org_country', '=', $f['country'])
+                                      ->get();
       if(isset($forgs[0]))
         $forgID = $forgs[0]->funding_org_id;
 
@@ -224,19 +233,32 @@ class TablesController extends Controller
         DB::table('id_map')->insert(['fund_id'=>$f['fund_id'], 'related_id'=>$in]);
       }
 
-
-   		$resultResearch = DB::table('fund_resarea')->where('funds.fund_id', '=', $f['fund_id'])->join('funds', 'funds.fund_id', '=', 'fund_resarea.fund_id')->get();
-   		if(!empty($resultResearch))
+      $resultResearch = DB::table('fund_resarea')->where('funds.fund_id', '=', $f['fund_id'])->join('funds', 'funds.fund_id', '=', 'fund_resarea.fund_id')->get();
+      if(!empty($resultResearch))
       foreach ($resultResearch as $research) {
-   			DB::table('fund_resarea')->where('fund_resarea.research_area_code', '=', $research->research_area_code)->where('fund_id', '=', $f['fund_id'])->delete();
-   		}if(!empty($f['res']))
-   		foreach ($f['res'] as $in) {
-   			DB::table('fund_resarea')->insert(['fund_id'=>$f['fund_id'], 'research_area_code'=>$in]);
-   		}
+        DB::table('fund_resarea')->where('fund_resarea.research_area_code', '=', $research->research_area_code)->where('fund_id', '=', $f['fund_id'])->delete();
+      }
+       $areas = DB::table('research_area')->get(['research_title']);
+      foreach($f['res'] as $ff){
+        $tmpp = false;
+        foreach ($areas as $ar) {
+          if($ar->research_title == $ff)
+            {$tmpp = true; break;}
+        }
+        if(!$tmpp)
+          DB::table('research_area')->insert(['research_title'=>$ff]);
+      }
+            $areas = DB::table('research_area')->get();
 
-   		if(!empty($r->resAreaTitle)){
-   			DB::table('research_area')->insert(['research_title'=>$r->resAreaTitle]);
-   		}
+      if(!empty($f['res']))
+      foreach($f['res'] as $in) {
+        foreach ($areas as $row) {
+          if($in == $row->research_title)
+            DB::table('fund_resarea')->insert(['fund_id'=>$f['fund_id'], 'research_area_code'=>$row->research_code]);
+        }
+      }
+
+   	
 
    		$resultTags = DB::table('fund_tag')->where('funds.fund_id', '=', $r->fund_id)->join('funds', 'funds.fund_id', '=', 'fund_tag.fund_id')->get();
       if(!empty($resultTags))
