@@ -9,7 +9,7 @@
 	    <div class="nav-wrapper">
 	      <a href="#" class="brand-logo center">@yield('pageTitle')</a>
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
-	        <li><a href="/tables"><i class="material-icons left">search</i>Search</a></li>
+	        <li><a href="/main"><i class="material-icons left">search</i>Search</a></li>
 	        <li><a href="/insert"><i class="material-icons left">add</i>Add Table</a></li>
 	      </ul>
 	        @yield('navExtensions')

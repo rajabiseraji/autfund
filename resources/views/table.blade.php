@@ -21,7 +21,7 @@
 
 
 @endsection
-				@section('fundNameValue'){{ $arr[0]->fund_name}}@endsection
+				@section('fundNameValue' , $arr[0]->fund_name)
 
 
 				@section('tagValue')
@@ -62,19 +62,17 @@
 				          
 					 	
 
-				@section('ratingValue'){{ $arr[0]->rating}}@endsection
+				@section('ratingValue' , $arr[0]->rating)
 
-				@section('acceptenceValue'){{ $arr[0]->fund_acceptence}}@endsection
+				@section('acceptenceValue',$arr[0]->fund_acceptence)
 
 				@section('orgValue')	
 					    <select id="fundSelect" name="fund_org" class="col s10">
 					      @foreach($orgs as $o)
-					      	<option value="{{ $o->funding_org_name }}" 
+					      	<option value="{{ $o->funding_org_id }}" 
 					      	@if(isset($arr[0]->funding_org_name) )
 					      	 @if($arr[0]->funding_org_code == $o->funding_org_id)
-					      	 @if($arr[0]->funding_org_country == $o->funding_org_country)
 				             selected 
-				             @endif
 				             @endif
 				            @endif
 					      	>{{ ucfirst(trans($o->funding_org_name)) }} - {{ $o->funding_org_country }}</option>
@@ -88,7 +86,7 @@
 				@section('resValue')
 					<select id="resSelect" multiple name="resArea[]" class="col s10">
 					      @foreach($res as $r)
-					      		<option value="{{ $r->research_title }}" 
+					      		<option value="{{ $r->research_code }}" 
 					      		@foreach($arr as $tmp)
 					      		@if(isset($tmp->research_area_code))
 						      	@if($r->research_code == $tmp->research_area_code)
@@ -121,31 +119,31 @@
 				@endsection --}}
 				      
 
-				@section('progValue'){{ $arr[0]->fund_program_description }}@endsection
+				@section('progValue',$arr[0]->fund_program_description)
 
-		       @section('durationValue'){{ $arr[0]->duration }}@endsection
+		       @section('durationValue',$arr[0]->duration )
 
-		       @section('financialValue'){{ $arr[0]->financial_support }}@endsection
+		       @section('financialValue',$arr[0]->financial_support )
 
-		       @section('requirementsValue'){{ $arr[0]->requirements }}@endsection
+		       @section('requirementsValue',$arr[0]->requirements )
 
-		       @section('deadlineValue'){{ $arr[0]->deadline }}@endsection
+		       @section('deadlineValue',$arr[0]->deadline )
 
-		       @section('link1Value'){{ $arr[0]->link1 }}@endsection
+		       @section('link1Value',$arr[0]->link1 )
 		       
-		       @section('link1ValueHref'){{ $arr[0]->link1 }}@endsection
+		       @section('link1ValueHref',$arr[0]->link1 )
 
-		       @section('link1Value'){{ $arr[0]->link1 }}@endsection
+		       @section('link1Value',$arr[0]->link1 )
 
-		       @section('link2Value'){{ $arr[0]->link2 }}@endsection
+		       @section('link2Value',$arr[0]->link2 )
 
-		       @section('link2ValueHref'){{ $arr[0]->link2 }}@endsection   		 
+		       @section('link2ValueHref',$arr[0]->link2 )   		 
 
-				@section('memoValue'){{ $arr[0]->memo }}@endsection
+				@section('memoValue',$arr[0]->memo )
 
-		       @section('farsiValue'){{ $arr[0]->farsi_desc }}@endsection
+		       @section('farsiValue',$arr[0]->farsi_desc )
 
-		       @section('commentsValue'){{ $arr[0]->comments }}@endsection
+		       @section('commentsValue',$arr[0]->comments )
 		          		
 		          		
 

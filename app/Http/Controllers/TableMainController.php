@@ -129,8 +129,9 @@ class TableMainController extends Controller
     	}
 
     	// $funding_orgs =  $qq->distinct()->pluck('funding_org_name');
-    	return $qq->get();
-    	$qq = $qq->select(array('funds.fund_name', 'funds.fund_id', 'funding_org_name', 'farsi_desc'))->get();
+    	// return $qq->get();
+    	// $qq = $qq->select(array('funds.fund_name', 'funds.fund_id', 'funding_org_name', 'farsi_desc'))->get();
+        $qq = $qq->get();
     	// return $result;
     	// return r1esponse()->json(array('success' => true, 'html'=>$returnHTML));
     	return view('resultPartMainView', compact('qq', 'funding_orgs'))->render();

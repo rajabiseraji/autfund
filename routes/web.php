@@ -44,6 +44,10 @@ Route::post('/researchDelete', 'TablesInsertController@resDelete');
 
 
 Route::post('/fundNameSave', 'TableUpdateController@updateName');
+Route::post('/tagSave', 'TableUpdateController@tagSave');
+Route::post('/fundRelSave', 'TableUpdateController@fundRelSave');
+Route::post('/orgSave', 'TableUpdateController@orgSave');
+Route::post('/resSave', 'TableUpdateController@resSave');
 
 
 Route::post('/home', 'TablesInsertController@home');
