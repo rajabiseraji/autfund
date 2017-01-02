@@ -1,0 +1,2 @@
+@yield('tagValue')
+@include('tagModals')

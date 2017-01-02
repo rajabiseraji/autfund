@@ -6,92 +6,6 @@ use Illuminate\Http\Request;
 
 class TablesController extends Controller
 {
-    function show(){
-    	// return $tableID;
-      $m = []; 
-    	$res =  DB::table('research_area')->get();
-      $fund_rel_id = DB::table('funds')->get();
-      $orgs = DB::table('funding_org')->get();
-    	$country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
-    	$tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
-    	return view('form')->with(compact('res', 'country', 'tags', 'm', 'fund_rel_id', 'orgs'));
-    }
-
-    public function search(Request $r){
-      $f['fund_rel_id'] = $r->fund_related_id;
-      $f['fund_id'] = $r->fund_id;
-    	$f['fund_name'] = $r->fund_name; 
-    	$f['rating'] = $r->fund_rating;     
-    	$f['fund_acceptence'] = $r->fund_acceptence;  
-    	$f['funding_org_code'] = $r->fund_org;
-    	$f['res'] = $r->resArea;
-      $f['tags'] = $r->tags;
-    	$f['country'] = $r->fund_country;       
-    	$f['fund_program_description'] = $r->program_desc; 
-    	$f['duration'] = $r->duration;        	
-    	$f['financial_support'] = $r->financial_support;       
-    	$f['requirements'] = $r->requirements;       
-    	$f['deadline'] = $r->deadline;        	
-    	$f['link1'] = $r->link1;   
-    	$f['link2'] = $r->link2;   
-    	$f['memo'] = $r->memo; 
-    	$f['farsi_desc'] = $r->farsiDesc;   
-    	$f['comments'] = $r->comment;
-      // return $f;
-      $result = DB::table('funds');
-    	foreach ($f as $key => $value) {
-          if(($value)){ //check for only not null values
-
-              if($key == 'tags'){
-
-              } else if($key == 'country') {
-                  continue;
-              } else if($key == 'funding_org_code'){
-                  continue;
-              } else if($key == 'res'){
-                  continue;
-              } else if($key == 'fund_rel_id'){
-                  continue;
-              } else {
-                // return $key.' '.$value;
-                  $value = '%'.$value.'%';
-                  $result = $result->where($key, 'like', $value);
-              }
-          }
-      }
-                
-
-      if(($r->fund_org) and !isset($r->fund_country)){
-        $result =  $result->join('funding_org', 'funding_org.funding_org_id', '=', 'funding_org_code')->where('funding_org_name', 'like', $f['funding_org_code']);
-    	} else if(isset($r->fund_country)){
-    		$result =  $result->join('funding_org', 'funding_org.funding_org_id', '=', 'funding_org_code')->where('funding_org_country', 'like', $f['country']);
-    	}
-
-    	if(!empty($f['res'])){
-    		$result = $result->join('fund_resarea', 'fund_resarea.fund_id', '=', 'funds.fund_id');
-    		foreach ($f['res'] as $x) {
-    			$result->where('research_area_code', '=', $x);
-    		}
-    	}
-
-      if(!empty($f['fund_rel_id'])){
-        $result = $result->join('id_map', 'id_map.fund_id', '=', 'funds.fund_id');
-        foreach ($f['fund_rel_id'] as $x) {
-          $result->where('related_id', '=', $x);
-        }
-      }
-
-    	if(!empty($f['tags'])){
-    		$result = $result->join('fund_tag', 'fund_tag.fund_id', '=', 'funds.fund_id');
-    		foreach ($f['tags'] as $t) {
-    			$result->where('tag_id', '=', $t);
-    		}
-    	}
-
-      // return $result->get();
-      $result = $result->get();
-		return view('resultView')->with(compact('result'));
-   }
 
 
 
@@ -107,14 +21,10 @@ class TablesController extends Controller
 
 
    function oneTable($tableID){
-   		// $m = array('m'=> 'edit');
-      // $fund_rel_id = DB::table('id_map')->join('funds', 'id_map.related_id', '=', 'funds.fund_id')
-      //                                   ->join('funds', 'id_map.fund_id', '=', 'funds.fund_id')
-      //                                   ->get(); 
       $funds = DB::table('funds')->get(); 
    		$res =  DB::table('research_area')->get();
       $orgs = DB::table('funding_org')->get();
-    	$c = DB::table('funding_org')->distinct()->get(['funding_org_country']);
+    	$country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
     	$tags = DB::table('tags')->orderByRaw("cast(tag_real as unsigned) asc")->get();
       $arr = DB::table('funds')->where('funds.fund_id', '=', $tableID);
    		$arrRef = DB::table('funds')->where('funds.fund_id', '=', $tableID);
@@ -155,7 +65,7 @@ class TablesController extends Controller
       $arr = $arrRef->get();
       // return $arr->get();
       
-   		return view('table')->with(compact('arr', 'res', 'c', 'tags', 'funds', 'orgs'));
+   		return view('table')->with(compact('arr', 'res', 'country', 'tags', 'funds', 'orgs'));
    }
 
 

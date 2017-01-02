@@ -30,7 +30,7 @@
 		@yield('pageHeader')
 
 		<div class="row" style="margin-top: 10vh">
-			<div class="card-panel hoverable gray text-black  col s10 offset-s1">
+			<div class="card-panel hoverable gray text-black  col s12 ">
 				@yield('form')
 			</div>
 		</div>
@@ -42,8 +42,10 @@
 
 		
 </div>
+	<script type="text/javascript" src="{{ asset('js/mainViewFunctions.js') }}"></script>	
+		<script type="text/javascript" src="{{ asset('js/function.js') }}"></script>
 
-	<script type="text/javascript" src="{{ asset('js/function.js') }}"></script>
+
 
 
 </body>

@@ -3,7 +3,12 @@
 	padding-bottom: 5%;
 }
 
-
+.toast{
+    font-size: 30px;
+    text-align: center;
+/*    position: relative;
+    margin-left: 20vw;*/
+}
 
 
 
@@ -36,3 +41,14 @@
 #comment{
     font-family: IRANSans;
 }
+
+
+.error{ 
+    float: right;
+    background: red;
+ }
+
+
+ .hide{ 
+    display: none;
+  }
