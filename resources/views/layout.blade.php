@@ -43,7 +43,6 @@
 		
 </div>
 	<script type="text/javascript" src="{{ asset('js/mainViewFunctions.js') }}"></script>	
-		<script type="text/javascript" src="{{ asset('js/function.js') }}"></script>
 
 
 

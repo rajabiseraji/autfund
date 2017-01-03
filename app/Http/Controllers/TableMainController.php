@@ -27,7 +27,7 @@ class TableMainController extends Controller
 
     function generateMainView(){
     	$result = DB::table('funds')->join('funding_org', 'funds.funding_org_code', '=', 'funding_org.funding_org_id');
- 		$m = [];
+ 		
  		$res = self::getResearchAreas();
  		$country = self::getCountry();
  		$orgs = DB::table('funding_org')->get();
@@ -35,11 +35,12 @@ class TableMainController extends Controller
  		$funding_orgs =  $result->distinct()->pluck('funding_org_name');
     	$qq = $result->get();
     	$tags = self::getTags();
-    	return view('mainView', compact('qq', 'funding_orgs', 'tags', 'm', 'fund_rel_id', 'res', 'country', 'orgs'));
+    	return view('mainView', compact('qq', 'funding_orgs', 'tags', 'fund_rel_id', 'res', 'country', 'orgs'));
     }
 
 
     function Ajax(Request $r){
+        $f = false;
 		$globRes = DB::table('funds');
     	$inp = '%'.$r->searchString.'%';
     	if($r->searchString != "") {
@@ -89,9 +90,11 @@ class TableMainController extends Controller
 	        if(count($qq->get())>0)
 	        	$globRes = $qq;
     	}
-    	if($r->country != ""){
+    	if($r->country != "" && $r->org == ""){
+            $f = true;
     		$qq = $globRes;
     		$qq =  $qq->join('funding_org', 'funding_org.funding_org_id', '=', 'funding_org_code')->where('funding_org_country', '=', $r->country);
+            // return $r->country;
     		// return $qq->get();
     		if(count($qq->get())>0)
 	        	$globRes = $qq;
@@ -105,14 +108,24 @@ class TableMainController extends Controller
     		if(count($qq->get())>0)
 	        	$globRes = $qq;
     	}
-    	if($r->org != ""){
+    	if($r->org != "" && $r->country == ""){
+            $f = true;
     		$qq = $globRes;
     		// $r->org = '%'.$r->org.'%';
-    		$qq =  $qq->join('funding_org', 'funding_org_id', '=', 'funding_org_code')->where('funding_org_name', '=', $r->org);
+    		$qq =  $qq->join('funding_org', 'funding_org_id', '=', 'funding_org_code')->where('funding_org_id', '=', $r->org);
     		// return $qq->get();
     		if(count($qq->get())>0)
 	        	$globRes = $qq;
     	}
+        if($r->org != "" && $r->country != ""){
+            $f = true;
+            $qq = $globRes;
+            // $r->org = '%'.$r->org.'%';
+            $qq =  $qq->join('funding_org', 'funding_org_id', '=', 'funding_org_code')->where('funding_org_id', '=', $r->org)->where('funding_org_country', '=', $r->country);
+            // return $qq->get();
+            if(count($qq->get())>0)
+                $globRes = $qq;
+        }
     	if(count($r->tag)>0){
     		$qq = $globRes;
     		$qq = $qq->join('fund_tag', 'fund_tag.fund_id', '=', 'funds.fund_id');
@@ -124,14 +137,16 @@ class TableMainController extends Controller
     	}
 
 
-    	if(empty($r->org) || empty($r->country)){
+    	if(!$f){
     		$qq = $globRes->join('funding_org', 'funding_org_code', '=', 'funding_org.funding_org_id');
     	}
 
-    	// $funding_orgs =  $qq->distinct()->pluck('funding_org_name');
+    	$funding_orgs =  $qq->distinct()->pluck('funding_org_name');
     	// return $qq->get();
     	// $qq = $qq->select(array('funds.fund_name', 'funds.fund_id', 'funding_org_name', 'farsi_desc'))->get();
         $qq = $qq->get();
+        if($f)
+            $f = false;
     	// return $result;
     	// return r1esponse()->json(array('success' => true, 'html'=>$returnHTML));
     	return view('resultPartMainView', compact('qq', 'funding_orgs'))->render();

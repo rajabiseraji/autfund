@@ -17,7 +17,7 @@ class TableUpdateController extends Controller
     			$name = 'farsi_desc';
     		else if($r->fieldName == 'comment')
     			$name = 'comments';
-
+    		
     		DB::table('funds')->where('fund_id', '=', $r->fundID)->update([$name=>$r->fieldValue]);
     		return 'ok';
     	} catch (Exception $e) {

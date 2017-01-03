@@ -72,12 +72,41 @@
 
 					 <div id="fund_tag_parent" class="row">
 					 	 @include('parentTags')
-					</div>
+					{{--  	 @yield('tagValue')
+						@include('tagModals')
+ --}}					</div>
 
 
 					 <div class="row">
 					 	 <div id="fund_related_id_parent" class="input-field col s12">
-				           @yield('fundRelatedValue')
+				           {{-- @yield('fundRelatedValue') --}}
+				           @if(isset($m['m']))
+						           <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+						           <option disabled="">Choose The related funds</option>
+							      @foreach($funds as $fund)
+							      	<option value="{{ $fund->fund_id }}" 
+							      		{{-- @foreach($fund_rel_id as $fr) --}}
+							      		@foreach($arr as $a) 
+						         		@if(isset($a->related_id))
+						         		@if($a->related_id == $fund->fund_id)
+						         		selected
+						         		@endif
+						         		@endif
+						         		@endforeach
+						         		{{-- @endforeach --}}
+						         		> {{$fund->fund_name}} </option>
+							      @endforeach
+							    </select>
+					   		@else
+				           		 <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+								<option disabled="">Choose The related funds</option>
+
+						      @foreach($fund_rel_id as $fr)
+						      	<option value="{{ $fr->fund_id }}">{{ ucfirst(trans($fr->fund_name)) }}</option>
+
+						      @endforeach
+					   			 </select>
+					   		@endif
 				          <label for="fund_id">Fund Related IDs</label>
 				        </div>
 					 </div>
@@ -96,16 +125,16 @@
 
 
 				       <div id="fund_org_parent" class="input-field col s6">
-				       		@yield('orgValue')
-							@include('fundOrgModals')
+				       			@include('editFundOrgModal')
+				       	
 
 						</div>
 
 
 
 				        <div id="fund_resArea_parent" class="input-field col s6">
-				        	@yield('resValue')
-				       		 @include('resModals')
+				        	{{-- @yield('resValue') --}}
+				        	@include('resList')
 
 				        </div>
 

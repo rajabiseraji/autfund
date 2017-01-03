@@ -95,7 +95,7 @@
 					    <select multiple id="resSelect" name="resArea[]" class="col s12">
 					      @foreach($res as $r)
 
-					      	<option value="{{ $r->research_title }}" >{{ ucfirst(trans($r->research_title)) }}</option>
+					      	<option value="{{ $r->research_code }}" >{{ ucfirst(trans($r->research_title)) }}</option>
 
 					      @endforeach
 					    </select>
@@ -125,7 +125,7 @@
 						<option value="" disabled selected>Choose your option</option>
 
 					      @foreach($orgs as $o)
-					      	<option value="{{ $o->funding_org_name }}" >{{ ucfirst(trans($o->funding_org_name)) }}</option>
+					      	<option value="{{ $o->funding_org_id }}" >{{ ucfirst(trans($o->funding_org_name)) }}</option>
 
 					      @endforeach
 					    </select>
@@ -146,7 +146,13 @@
 				        </div>
 					 </div>
 		</div>
+
+		<div class="row">
+			<div class="btn green center col s4 offset-s4" onclick="location.reload()">RESET</div>
+		</div>
 	</div>
+			<script type="text/javascript" src="{{ asset('js/function.js') }}"></script>
+
 @endsection
 
 @section('board')

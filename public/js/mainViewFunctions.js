@@ -51,6 +51,8 @@ $('[id*="_check"]').on('change',function(event) {
 	AjaxAsk(searchString);
 });
 
+
+
 function AjaxAsk(searchString){
 	var related = $('#fund_related_id').val();
 	var country = $('#fund_country').val();

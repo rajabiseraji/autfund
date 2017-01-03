@@ -9,16 +9,6 @@ class TablesController extends Controller
 
 
 
-   function ajax(Request $request){
-
-   		// $result =array('fund_name' => 'sd');
-
-     //    return response()
-     //              ->json($result);
-   }
-
-
-
 
    function oneTable($tableID){
       $funds = DB::table('funds')->get(); 
@@ -46,6 +36,7 @@ class TablesController extends Controller
         $arr = clone $tmp;
        }
       $tmp = $arr->join('fund_tag', 'fund_tag.fund_id', '=', 'funds.fund_id');
+      // return $arrRef->get();
       if(isset($tmp->get()[0])){
         $arrRef = clone $tmp;
         $arr = clone $tmp;
@@ -64,8 +55,9 @@ class TablesController extends Controller
       // return $arr;
       $arr = $arrRef->get();
       // return $arr->get();
-      
-   		return view('table')->with(compact('arr', 'res', 'country', 'tags', 'funds', 'orgs'));
+      $m = [];
+      $m['m'] = 'm';
+   		return view('table')->with(compact('arr', 'res', 'country', 'tags', 'funds', 'orgs', 'm'));
    }
 
 

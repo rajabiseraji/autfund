@@ -2,12 +2,12 @@
 
 @extends('parentForm')
 
-
+{{-- 
 
 @if(!isset($m['m']))
 @include('pageHeader')
 @endif
-
+ --}}
 @section('form')
 
 
@@ -72,6 +72,9 @@
 	          			Insert
 	          			@endif
 	          			</button>
+
+	          					<script type="text/javascript" src="{{ asset('js/function.js') }}"></script>
+
 					@endsection
 
 {{-- 

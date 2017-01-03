@@ -11,11 +11,11 @@ class TablesInsertController extends Controller
     function show(){
       $orgs = DB::table('funding_org')->get();
     	$fund_rel_id = DB::table('funds')->get();
-    	$m = array('m' => 'insert');
+    	// $m = array('m' => 'insert');
     	$res =  DB::table('research_area')->get();
     	$country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
     	$tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
-    	return view('form')->with(compact('res', 'country', 'tags', 'm', 'fund_rel_id', 'orgs'));
+    	return view('form')->with(compact('res', 'country', 'tags', 'fund_rel_id', 'orgs'));
     }
 
     function insert(Request $r){
@@ -126,7 +126,12 @@ class TablesInsertController extends Controller
         $lastTag = DB::table('tags')->orderBy('tag_id', 'desc')->first();
         // return $lastTag->tag_desc;
         $tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
-        return view('parentTags', compact('tags'));
+        if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+          return 'h';
+        }
+        return view('parentTags', compact('tags'))->render();
     }
   }
 
@@ -138,7 +143,12 @@ class TablesInsertController extends Controller
         $tagNewName = $r->tagTitleEdit;
         DB::table('tags')->where('tag_id', $tag_id)->update(['tag_desc'=>$tagNewName]);
         $tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
-        return view('tags', compact('tags'));
+        if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
+        return view('parentTags', compact('tags'))->render();
     }
   }
 
@@ -149,7 +159,12 @@ class TablesInsertController extends Controller
       $pattern = $t->tag_real.'%';
       DB::table('tags')->where('tag_real', 'like', $pattern)->delete();
        $tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
-        return view('parentTags', compact('tags'));
+       if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
+        return view('parentTags', compact('tags'))->render();
     }
   }
 
@@ -178,12 +193,22 @@ class TablesInsertController extends Controller
       DB::table('funding_org')->insert(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country'=>$r->country]);
       $orgs = DB::table('funding_org')->get();
       $country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
+      if(($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
       return view('editFundOrgModal', compact('orgs', 'country'));
     } 
     if(isset($r->fundingOrgName) && !empty($r->newCountry) ){
       DB::table('funding_org')->insert(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country'=>$r->newCountry]);
       $orgs = DB::table('funding_org')->get();
       $country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
+      if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
       return view('editFundOrgModal', compact('orgs', 'country'));
     }
     return 'not';
@@ -210,6 +235,11 @@ class TablesInsertController extends Controller
         $orgs = DB::table('funding_org')->get();
       $country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
       // return 'hiiii';
+      if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
       return view('editFundOrgModal', compact('orgs', 'country'));
 
     }
@@ -224,6 +254,11 @@ class TablesInsertController extends Controller
       $res = DB::table('funding_org')->where(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country' => $r->countryEditSelect])->delete();
       $orgs = DB::table('funding_org')->get();
       $country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
+      if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
       return view('editFundOrgModal', compact('orgs', 'country'));
     } catch (Exception $e) {
       return 'not';
@@ -237,7 +272,12 @@ class TablesInsertController extends Controller
       DB::table('research_area')->insert(['research_title'=>$r->newTitle]);
       $m = array('m' => 'insert');
       $res =  DB::table('research_area')->get();
-      return view('resList', compact('m', 'res'));
+      if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
+      return view('resList', compact( 'res'));
     } catch (Exception $e) {
       return 'not';
     }
@@ -251,7 +291,12 @@ class TablesInsertController extends Controller
         DB::table('research_area')->where(['research_title'=>$r->resSelectNew])->update(['research_title'=>$r->newTitle]);
         $m = array('m' => 'insert');
         $res =  DB::table('research_area')->get();
-        return view('resList', compact('m', 'res'));
+        if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
+        return view('resList', compact('res'));
       } else {
         return 'not';
       }
@@ -268,7 +313,12 @@ class TablesInsertController extends Controller
         DB::table('research_area')->where(['research_title'=>$r->resSelectNew])->delete();
         $m = array('m' => 'insert');
         $res =  DB::table('research_area')->get();
-        return view('resList', compact('m', 'res'));
+        if(isset($r->m)){
+          $m = [];
+          $m['m']='m';
+        return 'h';
+        }
+        return view('resList', compact('res'));
       } else {
         return 'not';
       }

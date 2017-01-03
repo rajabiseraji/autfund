@@ -23,6 +23,7 @@ Route::post('/main', 'TableMainController@Ajax');
 // Route::post('/tables', 'TablesController@search');
 
 Route::get('/tables/{tableID}', 'TablesController@oneTable');
+Route::get('/tables/{tableID}/teacher', 'TablesController@oneTable');
 Route::post('/tables/{tableID}/edit', 'TablesController@edit');
 // Route::delete('/tables/')
 Route::get('/tables/{tableID}/delete', 'TablesController@delete');
