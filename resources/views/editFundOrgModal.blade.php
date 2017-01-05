@@ -1,6 +1,6 @@
 
 							@if(isset($m['m']))
-							    <select id="fundSelect" name="fund_org" class="col s10">
+							    <select searchable="Search here ..." id="fundSelect" name="fund_org" class="col s10">
 							      @foreach($orgs as $o)
 							      	<option value="{{ $o->funding_org_id }}" 
 							      	@if(isset($arr[0]->funding_org_name) )
@@ -16,7 +16,7 @@
 				       		@else
 				       			
 
-						<select id="fundSelect" name="fund_org" class="col s10">
+						<select searchable="Search here ..." id="fundSelect" name="fund_org" class="col s10">
 						<option value="" disabled selected>Choose your option</option>
 
 					      @foreach($orgs as $o)

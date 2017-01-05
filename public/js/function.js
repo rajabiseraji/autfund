@@ -3,35 +3,35 @@ $(document).ready(function() {
 
 
 
-          // var ss = $('#tag option').toArray();
+          var ss = $('#tag option').toArray();
          
 
-          // var q = [];
-          // for (var i = ss.length - 1; i >= 0; i--) {
-          //   q.push($(ss[i]).text());
-          // }
-          // var qq = q.sortVersions();
-          // for (var i = qq.length - 1; i >= 0; i--) {
-          //   qq[i] = qq[i].replace(".NaN", "");
-          //   console.log(qq[i]);
-          // }
+          var q = [];
+          for (var i = ss.length - 1; i >= 0; i--) {
+            q.push($(ss[i]).text());
+          }
+          var qq = q.sortVersions();
+          for (var i = qq.length - 1; i >= 0; i--) {
+            qq[i] = qq[i].replace(".NaN", "");
+            console.log(qq[i]);
+          }
 
-          // $('#tag').empty();
-          // // $('#fund_tag_parent .select-dropdown').empty();
+          $('#tag').empty();
+          // $('#fund_tag_parent .select-dropdown').empty();
 
 
 
-          // var i = 0;
-          // var ll = qq.length;
-          // qq.reverse();
-          // while(qq.length != 0) {
-          //   if($(ss[i]).attr('id') == qq[qq.length-1]){
-          //     console.log(qq.pop());
-          //     $('#tag').append($(ss[i]));
-          //   }
-          //   i++;
-          //   i %= ll;
-          // }
+          var i = 0;
+          var ll = qq.length;
+          qq.reverse();
+          while(qq.length != 0) {
+            if($(ss[i]).attr('id') == qq[qq.length-1]){
+              console.log(qq.pop());
+              $('#tag').append($(ss[i]));
+            }
+            i++;
+            i %= ll;
+          }
 
            $('select').material_select(); 
 

@@ -7,13 +7,14 @@
 
 @section('navExtensions')
 			<ul id="nav-mobile" class="left hide-on-med-and-down">
-		        <li><a href="/tables"><i class="material-icons left">replay</i>Back</a></li>
+		        <li><a href="/main"><i class="material-icons left">replay</i>Back</a></li>
 		        <li>
 		    </ul>
 @endsection
 
 @section('form')
 	<h2 class="center black-text">Select your desired table from the list below</h2>
+	<br>
 	<hr class="col s5">
 	<span class="center green-text col s2">OR</span>
 	<hr class="col s5">
@@ -23,12 +24,28 @@
 	<div id="filterDescription" class = "col s10 offset-s1 card" style="display: none">
 		<div class="card-content">
 
+		<div id="fund_tag_parent" class="row">	
+        	 <h3 class="center black-text text-lighten-2">You can specify your <strong>fund category</strong> here</h3>	          		 
+			 {{-- @include('tags') --}}
+			 <select multiple searchable="Search here.." name="tags[]" id="tag" class="col s12">
+				         @foreach($tags as $tag)
+				         		<option value="{{ $tag->tag_id }}" id="{{ $tag->tag_real }}">{{ $tag->tag_real }} - {{ $tag->tag_desc }}</option>
+				         	@endforeach
+		          		</select>
+		</div>
+
+		<h3 class="center">Search in text fields: </h3>
         <div class="input-field">
           <input id="search" type="text"  >
           <label for="search">Look for a Fund name, a comment or any other text</label>
         </div>
         <h3 class="center">Where do you want to look for your text? </h3>
         
+        <div class="input-field center">
+        	<input type="checkbox" id="selectAllButton"   />
+	      	<label for="selectAllButton"><b>Select all - Deselect all</b></label>
+	    </div>
+
         <div class="input-field">
         	<input type="checkbox" id="fund_name_check"   />
 	      	<label for="fund_name_check">In Fund Names</label>
@@ -70,15 +87,7 @@
 	      	<label for="fund_comments_check">Or In Fund Comments </label>
         </div>
         <br>
-        <div id="fund_tag_parent" class="row">	
-        	 <h3 class="center black-text text-lighten-2">You can specify your <strong>fund category</strong> here</h3>	          		 
-			 {{-- @include('tags') --}}
-			 <select multiple name="tags[]" id="tag" class="col s12">
-				         @foreach($tags as $tag)
-				         		<option value="{{ $tag->tag_id }}" id="{{ $tag->tag_real }}">{{ $tag->tag_real }} - {{ $tag->tag_desc }}</option>
-				         	@endforeach
-		          		</select>
-			</div>
+    
 
 		</div>
 		<div class="row">
@@ -92,7 +101,7 @@
 			<h3 class="center black-text text-lighten-2">Specify the <strong> research area</strong> of the fund you're looking for </h3>
 			<div id="fund_resArea_parent" class="input-field col s12">
 
-					    <select multiple id="resSelect" name="resArea[]" class="col s12">
+					    <select  multiple searchable="Search here.." id="resSelect" name="resArea[]" class="col s12">
 					      @foreach($res as $r)
 
 					      	<option value="{{ $r->research_code }}" >{{ ucfirst(trans($r->research_title)) }}</option>
@@ -105,37 +114,41 @@
 		<div class="row">
 			<h3 class="center black-text text-lighten-2">Specify the <strong>Country</strong> of the fund you're looking for </h3>
 			<div id="fund_country_parent" class="input-field col s12">
-				          <select id="fund_country" name="fund_country" class="icons">
-					      <option value="" disabled selected>Choose your option</option>
+				          <select searchable="Search here.." id="fund_country" name="fund_country" class="col s10">
+					      <option id="defaultCountry" value="" disabled selected>Choose your option</option>
 					      
 					      @foreach($country as $c)
 					      	<option value="{{ $c->funding_org_country }}" class="circle">{{ $c->funding_org_country }}</option>	
 					      @endforeach
 
 					    </select>
-					    <label>Coutry</label>
-				        </div>
+					    <label>Country</label>
+						<input style="position: relative; bottom: -12px;" type="button" id="resetCountry" class="col s2 btn green " value="Reset">
+						</input>
+			</div>
 		</div>
 
 		<div class="row">
 			<h3 class="center black-text text-lighten-2">Specify the <strong>funding organization</strong> of the fund you're looking for </h3>
-			<div id="fund_org_parent" class="input-field col s6">
+			<div id="fund_org_parent" class="input-field col s12">
 
-					    <select id="fund_org" name="fund_org" class="col s12">
-						<option value="" disabled selected>Choose your option</option>
+					    <select id="fund_org" name="fund_org" class="col s10" searchable="Search here..">
+						<option id="defaultOrg" value="" disabled selected>Choose your option</option>
 
 					      @foreach($orgs as $o)
 					      	<option value="{{ $o->funding_org_id }}" >{{ ucfirst(trans($o->funding_org_name)) }}</option>
 
 					      @endforeach
 					    </select>
+			<input style="position: relative; bottom: -12px;" type="button" id="resetOrg" class="col s2 btn green " value="Reset">
+			</input>
 			</div>
 		</div>
 
 		 <div class="row">
 		 				<h3 class="center black-text text-lighten-2">The fund you're looking for is <strong>related to</strong>: </h3>
 					 	 <div id="fund_related_id_parent" class="input-field col s12">
-				           <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+				           <select multiple searchable="Search here.." id="fund_related_id" name="fund_related_id[]" class="col s12">
 							<option disabled selected>Choose The related funds</option>
 
 					      @foreach($fund_rel_id as $fr)

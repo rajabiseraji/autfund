@@ -22,7 +22,7 @@
 <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
 
   <!-- Compiled and minified JavaScript -->
-  <script src="{{ asset('js/materialize.min.js') }}"></script>
+  <script src="{{ asset('js/materialize.js') }}"></script>
 
       <style type="text/css">
       #prel {

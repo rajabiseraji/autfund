@@ -3226,7 +3226,46 @@ $(document).ready(function(){
           optionsHover = false;
 
       var label = $select.find('option:selected').html() || $select.find('option:first').html() || "";
+	
+	  //Added to search
+	  var applySeachInList = function() {
+		
+		var ul = $(this).closest('ul');			
+		var searchValue = $(this).val();		
+		var options = ul.find('li')
+						.find('span.filtrable');
+				
+		options.each(function() {				  
+		  if (typeof(this.outerText) == 'string') {
+			var liValue = this.outerText.toLowerCase();
 
+			if (liValue.indexOf(searchValue.toLowerCase()) === -1) {
+			  $(this).hide();
+			  $(this).parent().hide();
+			} else {
+			  $(this).show();
+			  $(this).parent().show();
+			}
+		  }
+		});		
+	  }
+	
+	  //Added to search
+	  var setSearchableOption = function () {
+		var placeholder = $select.attr('searchable');
+		var element = $('<span><input type="text" class="search" style="margin: 5px 0px 16px 15px; width: 96%;" placeholder="' + placeholder + '"></span>');
+		options.append(element);
+		element.find('.search').keyup(applySeachInList);
+	  }
+	  
+	  //Added to search
+	  var searchable = $select.attr('searchable') ? true : false;
+	  
+	  //Added to search	  
+	  if (searchable) {
+		setSearchableOption();
+	  }
+	
       // Function that renders and appends the option taking into
       // account type and possible image icon.
       var appendOptionWithIcon = function(select, option, type) {
@@ -3243,18 +3282,18 @@ $(document).ready(function(){
 
           // Check for multiple type.
           if (type === 'multiple') {
-            options.append($('<li class="' + disabledClass + '"><img alt="" src="' + icon_url + '"' + classString + '><span><input type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
+            options.append($('<li class="' + disabledClass + '"><img alt="" src="' + icon_url + '"' + classString + '><span class="filtrable"><input type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
           } else {
-            options.append($('<li class="' + disabledClass + optgroupClass + '"><img alt="" src="' + icon_url + '"' + classString + '><span>' + option.html() + '</span></li>'));
+            options.append($('<li class="' + disabledClass + optgroupClass + '"><img alt="" src="' + icon_url + '"' + classString + '><span class="filtrable">' + option.html() + '</span></li>'));
           }
           return true;
         }
 
         // Check for multiple type.
         if (type === 'multiple') {
-          options.append($('<li class="' + disabledClass + '"><span><input type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
+          options.append($('<li class="' + disabledClass + '"><span class="filtrable"><input type="checkbox"' + disabledClass + '/><label></label>' + option.html() + '</span></li>'));
         } else {
-          options.append($('<li class="' + disabledClass + optgroupClass + '"><span>' + option.html() + '</span></li>'));
+          options.append($('<li class="' + disabledClass + optgroupClass + '"><span class="filtrable">' + option.html() + '</span></li>'));
         }
       };
 
@@ -3289,7 +3328,7 @@ $(document).ready(function(){
 
             if (multiple) {
               $('input[type="checkbox"]', this).prop('checked', function(i, v) { return !v; });
-              selected = toggleEntryFromArray(valuesSelected, $(this).index(), $select);
+              selected = toggleEntryFromArray(valuesSelected, $(this).index() - 1, $select);
               $newSelect.trigger('focus');
             } else {
               options.find('li').removeClass('active');
@@ -3354,22 +3393,32 @@ $(document).ready(function(){
         }
       });
 
+	  //Changed to search to treat search
       $newSelect.on('blur', function() {
-        if (!multiple) {
+		
+        if (!multiple && !searchable) {
           $(this).trigger('close');
         }
         options.find('li.selected').removeClass('selected');
       });
+	  
+	  //Added to search
+	  if (!multiple && searchable) {
+		  options.find('li').on('click', function() {
+			  $newSelect.trigger('close');
+		  });
+	  }
 
       options.hover(function() {
         optionsHover = true;
       }, function () {
         optionsHover = false;
       });
-
+	
+	  //Changed to search to treat search
       $(window).on({
         'click': function () {
-          multiple && (optionsHover || $newSelect.trigger('close'));
+          (multiple || searchable) && (optionsHover || $newSelect.trigger('close'));
         }
       });
 
@@ -7776,3 +7825,8 @@ Picker.extend( 'pickadate', DatePicker )
       }
     }; // Plugin end
 }( jQuery ));
+
+//Here is the call
+$(document).ready(function() {
+  $('select').material_select();
+});

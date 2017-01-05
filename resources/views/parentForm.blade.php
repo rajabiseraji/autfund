@@ -15,41 +15,8 @@
 
 	@section('pageTitle')
 		Table Insert
-		<script type="text/javascript">
-			jQuery(document).ready(function($) {
-				$('#mainForm').validate({
-                rules: {
-          // The key name on the left side is the name attribute
-          // of an input field. Validation rules are defined
-          // on the right side
-          fund_name: "required",
-          tags: "required",
-          fund_rating: "required",
-          fund_org: "required", 
-          resArea: "required"
-        },
-        // Specify validation error messages
-        messages: {
-          fund_name: "Please enter the fund name",
-          tags: "Please specify the tag",
-          fund_rating: "Please specify the fund rating",
-          fund_org: "Please specify the funding organization"
-        },
 
-        errorPlacement: function(error, element) {
-          error.appendTo( element.parent() );
-        },
-        // Make sure the form is submitted to the destination defined
-        // in the "action" attribute of the form when valid
-      submitHandler: function(form) {
-        form.submit();
-      }
-
-    });
-
-			});
-				 			
-		</script>
+		<script src="{{ asset('js/materialize.js') }}"></script>
 	@endsection
 
 
@@ -81,7 +48,7 @@
 					 	 <div id="fund_related_id_parent" class="input-field col s12">
 				           {{-- @yield('fundRelatedValue') --}}
 				           @if(isset($m['m']))
-						           <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+						           <select searchable="Search here ..." multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
 						           <option disabled="">Choose The related funds</option>
 							      @foreach($funds as $fund)
 							      	<option value="{{ $fund->fund_id }}" 
@@ -98,7 +65,7 @@
 							      @endforeach
 							    </select>
 					   		@else
-				           		 <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+				           		 <select searchable="Search here ..." multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
 								<option disabled="">Choose The related funds</option>
 
 						      @foreach($fund_rel_id as $fr)

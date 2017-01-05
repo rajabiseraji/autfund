@@ -8,7 +8,7 @@
 
 @section('navExtensions')
 			<ul id="nav-mobile" class="left hide-on-med-and-down">
-		        <li><a href="/tables"><i class="material-icons left">replay</i>Back</a></li>
+		        <li><a href="/main"><i class="material-icons left">replay</i>Back</a></li>
 		    </ul>
 @endsection
 
@@ -25,7 +25,7 @@
 
 
 				@section('tagValue')
-				        	 <select name="tags[]" multiple id="tag" class="col s10">
+				        	 <select name="tags[]" multiple searchable="Search here.." id="tag" class="col s10">
 				         	@foreach($tags as $tag)
 				         		<option value="{{ $tag->tag_id }}"
 				         		@foreach($arr as $a) 
@@ -42,7 +42,7 @@
 
 				         	
 				@section('fundRelatedValue')
-				           <select multiple id="fund_related_id" name="fund_related_id[]" class="col s12">
+				           <select multiple searchable="Search here.." id="fund_related_id" name="fund_related_id[]" class="col s12">
 				           <option disabled="">Choose The related funds</option>
 					      @foreach($funds as $fund)
 					      	<option value="{{ $fund->fund_id }}" 
@@ -67,7 +67,7 @@
 				@section('acceptenceValue',$arr[0]->fund_acceptence)
 
 				@section('orgValue')	
-					    <select id="fundSelect" name="fund_org" class="col s10">
+					    <select searchable="Search here.." id="fundSelect" name="fund_org" class="col s10">
 					      @foreach($orgs as $o)
 					      	<option value="{{ $o->funding_org_id }}" 
 					      	@if(isset($arr[0]->funding_org_name) )
@@ -84,7 +84,7 @@
 					  		
 
 				@section('resValue')
-					<select id="resSelect" multiple name="resArea[]" class="col s10">
+					<select id="resSelect" multiple searchable="Search here.." name="resArea[]" class="col s10">
 					      @foreach($res as $r)
 					      		<option value="{{ $r->research_code }}" 
 					      		@foreach($arr as $tmp)
@@ -149,7 +149,8 @@
 
 
 		       @section('subbutValue')
-		       		<button id="subbutt" type="submit" class="waves-effect waves-light btn col s12">Update</button>
+		       		<a href="{{ url('/tables/'.$arr[0]->fund_id.'/delete') }}" class="waves-effect waves-light red btn col s12" >Discard Table</a>
+		       		<button class="waves-effect waves-light btn col s12 disabled" disabled>You're Data is autosaved, no need to press anything :) </button>
 		       		<script type="text/javascript" src="{{ asset('js/updateTable.js') }}"></script>
 		       @endsection
 	          			

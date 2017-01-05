@@ -2,8 +2,57 @@
 $(document).ready(function() {
         $('body').addClass('loaded');
 
+        
+
+        		jQuery.validator.addMethod("selectEmpty", function(value, element) {
+				  if(value)
+				  	return true;
+				  else 
+				  	return false;
+				}, "This field can\'t be empty");
+
+				$("input").validate({
+					  onkeyup: true
+					});
+
+				$('#mainForm').validate({
+                rules: {
+          // The key name on the left side is the name attribute
+          // of an input field. Validation rules are defined
+          // on the right side
+          fund_name: "required",
+          tags: {
+          	required: true
+          },
+          fund_rating: "required",
+          fund_org: "required", 
+          resArea: "required"
+        },
+        // Specify validation error messages
+        messages: {
+          fund_name: "Please enter the fund name",
+          tags: "Please specify the tag",
+          fund_rating: "Please specify the fund rating",
+          fund_org: "Please specify the funding organization"
+        },
+
+        // errorPlacement: function(error, element) {
+        //   error.appendTo( element.parent() );
+        // },
+        // Make sure the form is submitted to the destination defined
+        // in the "action" attribute of the form when valid
+      submitHandler: function(form) {
+        form.submit();
+      }
+
+      });
 
 
+
+
+        // if($('#comment').val().indexOf('undone')>0){
+        // 	$('#fromCard').
+        // }
           // var ss = $('#tag option').toArray();
          
 
@@ -224,7 +273,7 @@ $('#insResArea').on('click', function(event) {
     console.log("success");
   })
   .fail(function() {
-     Materialize.toast('not inserted', 4000);
+     Materialize.toast('Not inserted, Probably another research area with the same name exists', 4000);
     console.log("error");
   })
   .always(function() {
@@ -247,9 +296,9 @@ $('#editResArea').on('click', function(event) {
   })
   .done(function(data) {
     if(data == 'not'){
-      Materialize.toast('not inserted', 4000);
+      Materialize.toast('Not changed, , Probably another research area with the same name exists', 4000);
     } else {
-        Materialize.toast('Inserted!', 4000) ;
+        Materialize.toast('Changed!', 4000) ;
           location.reload();
 
         $('#fund_resArea_parent').empty();
@@ -260,7 +309,7 @@ $('#editResArea').on('click', function(event) {
   }
   })
   .fail(function() {
-     Materialize.toast('not inserted', 4000);
+     Materialize.toast('Not changed, , Probably another research area with the same name exists', 4000);
     console.log("error");
   })
   .always(function() {
@@ -452,15 +501,19 @@ $.ajax({
     data: {_token: CSRF_TOKEN,m: 'm', fundingOrgName: fundingOrgName, country: country, newCountry: newCountry}
 
 }).done(function(data){
-	$(this).off();
-	location.reload();
-  console.log(data);
-  $('#fund_org_parent').empty();
-  $('#fund_org_parent').append(data);
-    $('.modal').modal();
-      $('select').material_select();
-      location.reload();
-    Materialize.toast('Succusfully Inserted', 4000);
+	if(data == 'not')
+		Materialize.toast('This fund already exists', 4000);
+	else{
+			$(this).off();
+			location.reload();
+		  console.log(data);
+		  $('#fund_org_parent').empty();
+		  $('#fund_org_parent').append(data);
+		  $('.modal').modal();
+		  $('select').material_select();
+		  location.reload();
+		  Materialize.toast('Succusfully Inserted', 4000);
+	}
 }).fail(function() {
      Materialize.toast('not changed', 4000);
     console.log("error");
@@ -486,7 +539,7 @@ $.ajax({
 
 }).done(function(data){
   if(data == 'not'){
-     Materialize.toast('not changed', 4000, 'toasts');
+     Materialize.toast('Not changed, probably because another table with the same info exists', 4000, 'toasts');
     console.log("error");
   } else {
         console.log(data);
@@ -570,11 +623,15 @@ function initForms(){
 			data: {_token: CSRF_TOKEN, fieldName: fieldName, fundID: fundID, fieldValue: fieldValue},
 		})
 		.done(function(data) {
-			Materialize.toast('Autosaved!', 4000) ;
-			console.log("success");
+			if(data == 'no')
+				Materialize.toast('An error occured while auto saving, This field can\'t be empty', 4000) ;
+			else {
+				Materialize.toast('Autosaved!', 4000) ;
+				console.log("success");
+			}
 		})
 		.fail(function() {
-			Materialize.toast('An error occured while auto saving', 4000) ;
+			Materialize.toast('An error occured while auto saving, This field can\'t be empty', 4000) ;
 			console.log("error");
 		})
 		.always(function() {
@@ -585,7 +642,8 @@ function initForms(){
 
 
 	$('#tag').on('change', function(event) {
-		
+		$('#fund_tag_parent select-dropdown').validate();
+		$(this).validate();
 		var fundID = $(location).attr('pathname').split('/');
 		fundID = fundID[2];
 		var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -596,8 +654,13 @@ function initForms(){
 			data: {_token: CSRF_TOKEN, tag: tag, fundID: fundID},
 		})
 		.done(function(data) {
-			Materialize.toast('Tags Autosaved!', 4000) ;
-			console.log("success");
+			if(data == 'no'){
+				Materialize.toast('Tags can\'t be empty!', 4000) ;
+				// setTimeout(location.reload(), 2000);
+			} else {
+				Materialize.toast('Tags Autosaved!', 4000) ;
+				console.log("success");
+			}
 		})
 		.fail(function() {
 			Materialize.toast('An error occured while auto saving', 4000) ;
@@ -645,8 +708,12 @@ function initForms(){
 			data: {_token: CSRF_TOKEN, res_code: res_code, fundID: fundID},
 		})
 		.done(function(data) {
-			Materialize.toast('Research Area Autosaved!', 4000) ;
-			console.log("success");
+			if(data == 'no'){
+				Materialize.toast('Research Area can\'t be empty!', 4000) ;
+			} else {
+				Materialize.toast('Research Area Autosaved!', 4000) ;
+				console.log("success");
+			}
 		})
 		.fail(function() {
 			Materialize.toast('An error occured while auto saving', 4000) ;
@@ -672,7 +739,10 @@ function initForms(){
 			data: {_token: CSRF_TOKEN, fund_org: fund_org, fundID: fundID},
 		})
 		.done(function(data) {
-			Materialize.toast('Related ID Autosaved!', 4000) ;
+			if(data == 'no'){
+				Materialize.toast('Fund Organization can\'t be empty!', 4000) ;	
+			}
+			Materialize.toast('Fund Organization Autosaved!', 4000) ;
 			console.log("success");
 		})
 		.fail(function() {

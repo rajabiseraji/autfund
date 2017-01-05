@@ -193,7 +193,7 @@ class TablesController extends Controller
    function delete($tableID){
    		DB::table('funds')->where('fund_id', '=', $tableID)->delete();
 
-   		return redirect('/tables/');
+   		return redirect('/main/');
 
    }
 

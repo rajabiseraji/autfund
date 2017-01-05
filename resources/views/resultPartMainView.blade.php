@@ -1,17 +1,19 @@
 
   <div class="card-header"><h3 class="center red-text text-lighten-2">Search results</h3></div>
 @if(count($qq)>0)
-  <div class="row"><hr>
+  <div class="row">
+  <div class="btn green col col s6 offset-s3" id="expandAll" >Toggle expand all</div>
+  <hr class="col s12">
     <div class="col s12">
       <ul class="tabs">
       @foreach($funding_orgs as $funding_org)
-        <li class="tab col s3"><a href="#{{ $funding_org}}">{{ $funding_org }}</a></li>
+        <li class="tab"><a href="#{{ $funding_org}}"><b>{{ $funding_org }}</b></a></li>
       @endforeach
       </ul>
     </div>
     @foreach($funding_orgs as $funding_org)
     	<div id="{{ $funding_org }}" class="col s12">
-		    			<ul class="collapsible" data-collapsible="accordion">
+		    			<ul class="collapsible" data-collapsible="expandable">
 		 
 			@foreach($qq as $r)
 				@if($r->funding_org_name == $funding_org)

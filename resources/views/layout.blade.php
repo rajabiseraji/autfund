@@ -29,7 +29,7 @@
 		@yield('content')
 		@yield('pageHeader')
 
-		<div class="row" style="margin-top: 10vh">
+		<div id="formCard" class="row" style="margin-top: 10vh">
 			<div class="card-panel hoverable gray text-black  col s12 ">
 				@yield('form')
 			</div>

@@ -125,7 +125,7 @@ class TablesInsertController extends Controller
         DB::table('tag_tag')->insert(['tag_id'=> $myID[0]->tag_id, 'parent_tag_id'=>$parent[0]->tag_id]);
         $lastTag = DB::table('tags')->orderBy('tag_id', 'desc')->first();
         // return $lastTag->tag_desc;
-        $tags = DB::table('tags')->orderByRaw("cast(tag_real as decimal(6,4)) asc")->get();
+        $tags = DB::table('tags')->get();
         if(isset($r->m)){
           $m = [];
           $m['m']='m';
@@ -190,9 +190,13 @@ class TablesInsertController extends Controller
 
   function orgInsert(Request $r){
     if(isset($r->fundingOrgName) && isset($r->country) && empty($r->newCountry)){
+       $exists = DB::table('funding_org')->where('funding_org_name', '=', $r->fundingOrgName)->where('funding_org_country', '=', $r->country)->get();
+      if(count($exists)>0)
+        return 'not';
       DB::table('funding_org')->insert(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country'=>$r->country]);
       $orgs = DB::table('funding_org')->get();
       $country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
+
       if(($r->m)){
           $m = [];
           $m['m']='m';
@@ -201,6 +205,9 @@ class TablesInsertController extends Controller
       return view('editFundOrgModal', compact('orgs', 'country'));
     } 
     if(isset($r->fundingOrgName) && !empty($r->newCountry) ){
+      $exists = DB::table('funding_org')->where('funding_org_name', '=', $r->fundingOrgName)->where('funding_org_country', '=', $r->newCountry)->get();
+      if(count($exists)>0)
+        return 'not';
       DB::table('funding_org')->insert(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country'=>$r->newCountry]);
       $orgs = DB::table('funding_org')->get();
       $country = DB::table('funding_org')->distinct()->get(['funding_org_country']);
@@ -218,10 +225,17 @@ class TablesInsertController extends Controller
     if(isset($r->countryEditSelect) && isset($r->fundingOrgName)){
       if(isset($r->newCountryEdit) && !empty($r->newNameEdit) && empty($r->typeNewCountry)){
         // return $r->newNameEdit." ".$r->newCountryEdit." ".$r->fundingOrgName." ".$r->countryEditSelect;
+        
+        $exists = DB::table('funding_org')->where('funding_org_name', '=', $r->fundingOrgName)->where('funding_org_country', '=', $r->newCountryEdit)->get();
+        if(count($exists)>0)
+          return 'not';
+
         DB::table('funding_org')->where(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country' => $r->countryEditSelect])->update(['funding_org_name'=>$r->newNameEdit, 'funding_org_country' => $r->newCountryEdit]);
       
 
       } else if(!empty($r->newNameEdit) && !empty($r->typeNewCountry)){
+
+
         DB::table('funding_org')->where(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country' => $r->countryEditSelect])->update(['funding_org_name'=>$r->newNameEdit, 'funding_org_country' => $r->typeNewCountry]);
       } else if(empty($r->newNameEdit) && !empty($r->typeNewCountry)){
         DB::table('funding_org')->where(['funding_org_name'=>$r->fundingOrgName, 'funding_org_country' => $r->countryEditSelect])->update(['funding_org_country' => $r->typeNewCountry]);

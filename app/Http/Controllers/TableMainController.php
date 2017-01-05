@@ -130,7 +130,7 @@ class TableMainController extends Controller
     		$qq = $globRes;
     		$qq = $qq->join('fund_tag', 'fund_tag.fund_id', '=', 'funds.fund_id');
         	foreach ($r->tag as $t) {
-    			$qq = $qq->where('tag_id', '=', $t);
+    			$qq = $qq->orWhere('tag_id', '=', $t);
     		}
     		if(count($qq->get())>0)
 	        	$globRes = $qq;

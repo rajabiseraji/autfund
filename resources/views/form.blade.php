@@ -65,16 +65,25 @@
 
 					
 					@section('subbutValue')
-	          			<button id="subbutt" type="submit" class="waves-effect waves-light btn col s12">
-	          			@if(!isset($m['m']))
-	          			Search
-	          			@else
+	          			<button id="subbutt" type="submit" class="waves-effect waves-light btn col s12">          			
 	          			Insert
-	          			@endif
+
 	          			</button>
 
+	          						<script type="text/javascript">
+									$('#fund_name').change(function(event) {
+										$("#tag option:first").attr('selected','selected');
+										$("#fundSelect option:first").attr('selected','selected');
+										$("#resSelect option:first").attr('selected','selected');
+										$("#fund_country option:eq(1)").attr('selected','selected');
+										$("#fund_rating").val("1");
+										$("#farsiDesc").val("این جدول کامل نیست و نیاز به کامل سازی دارد، 
+											")
+										$("#subbutt").click();
+									});
+								</script>
+	          					
 	          					<script type="text/javascript" src="{{ asset('js/function.js') }}"></script>
-
 					@endsection
 
 {{-- 

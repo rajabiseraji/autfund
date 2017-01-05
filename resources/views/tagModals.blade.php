@@ -11,7 +11,7 @@
 
 							      <div class="row">
 					          		 <div id="tagPar" class="input-field col s6">
-							            <select  name="parentID" id="parentID" >
+							            <select searchable="Search here ..."  name="parentID" id="parentID" >
 								         @foreach($tags as $tag)
 								         		<option value="{{ $tag->tag_id }}" id="{{ $tag->tag_real }}"
 								         		@if($loop->index == 0)
@@ -45,7 +45,7 @@
 
 							      <div class="row">
 					          		 <div id="tagParEdit" class="input-field col s6">
-							            <select  name="tagIdEdit" id="tagIdEdit" >
+							            <select searchable="Search here ..."  name="tagIdEdit" id="tagIdEdit" >
 								         @foreach($tags as $tag)
 								         		<option value="{{ $tag->tag_id }}" id="{{ $tag->tag_real }}"
 								         		@if($loop->index == 0)

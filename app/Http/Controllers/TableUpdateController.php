@@ -17,8 +17,11 @@ class TableUpdateController extends Controller
     			$name = 'farsi_desc';
     		else if($r->fieldName == 'comment')
     			$name = 'comments';
-    		
-    		DB::table('funds')->where('fund_id', '=', $r->fundID)->update([$name=>$r->fieldValue]);
+    		if(!($r->fieldValue) && ($name == 'fund_name' || $name = 'rating') )
+    			return 'no';
+    		else 
+    			DB::table('funds')->where('fund_id', '=', $r->fundID)->update([$name=>$r->fieldValue]);
+
     		return 'ok';
     	} catch (Exception $e) {
     		return 'no';
@@ -27,16 +30,19 @@ class TableUpdateController extends Controller
 
     function tagSave(Request $r){
     	try {
-				$resultTags = DB::table('fund_tag')->where('funds.fund_id', '=', $r->fundID)->join('funds', 'funds.fund_id', '=', 'fund_tag.fund_id')->get();
-		      if(!empty($resultTags))
-		   		foreach ($resultTags as $tt) {
-		   			DB::table('fund_tag')->where('fund_tag.tag_id', '=', $tt->tag_id)->where('fund_id', '=', $r->fundID)->delete();
-		   		}
-		      if(!empty($r->tag))
-		   		foreach ($r->tag as $tag) {
-		   			DB::table('fund_tag')->insert(['fund_id'=>$r->fundID, 'tag_id'=>$tag]);
-		   		}
-    		return 'ok';
+			  if(!empty($r->tag)){
+				  $resultTags = DB::table('fund_tag')->where('funds.fund_id', '=', $r->fundID)->join('funds', 'funds.fund_id', '=', 'fund_tag.fund_id')->get();
+			      if(!empty($resultTags))
+			   		foreach ($resultTags as $tt) {
+			   			DB::table('fund_tag')->where('fund_tag.tag_id', '=', $tt->tag_id)->where('fund_id', '=', $r->fundID)->delete();
+			   		}
+			      if(!empty($r->tag))
+			   		foreach ($r->tag as $tag) {
+			   			DB::table('fund_tag')->insert(['fund_id'=>$r->fundID, 'tag_id'=>$tag]);
+			   		}
+	    		return 'ok';
+			  } else 
+			  	return 'no';
     	} catch (Exception $e) {
     		return 'no';
     	}
@@ -62,7 +68,10 @@ class TableUpdateController extends Controller
     function orgSave(Request $r){
     	try {
 			  // return $r->fund_org;
-			  DB::table('funds')->where('fund_id', '=', $r->fundID)->update(['funding_org_code'=>$r->fund_org]);
+			  if(isset($r->fundID))
+			  	DB::table('funds')->where('fund_id', '=', $r->fundID)->update(['funding_org_code'=>$r->fund_org]);
+			  else 
+			  	return 'no';
     		return 'ok';
     	} catch (Exception $e) {
     		return 'no';
@@ -71,15 +80,19 @@ class TableUpdateController extends Controller
 
     function resSave(Request $r){
     	try {
-			$resultResearch = DB::table('fund_resarea')->where('funds.fund_id', '=', $r->fundID)->join('funds', 'funds.fund_id', '=', 'fund_resarea.fund_id')->get();
-		      if(!empty($resultResearch))
-		      foreach ($resultResearch as $research) {
-		        DB::table('fund_resarea')->where('fund_resarea.research_area_code', '=', $research->research_area_code)->where('fund_id', '=', $r->fundID)->delete();
-		      }
-		      if(!empty($r->res_code))
-		      foreach ($r->res_code as $in) {
-		        DB::table('fund_resarea')->insert(['fund_id'=>$r->fundID, 'research_area_code'=>$in]);
-		      }
+    		if(isset($r->res_code)){
+				$resultResearch = DB::table('fund_resarea')->where('funds.fund_id', '=', $r->fundID)->join('funds', 'funds.fund_id', '=', 'fund_resarea.fund_id')->get();
+			      if(!empty($resultResearch))
+			      foreach ($resultResearch as $research) {
+			        DB::table('fund_resarea')->where('fund_resarea.research_area_code', '=', $research->research_area_code)->where('fund_id', '=', $r->fundID)->delete();
+			      }
+			      if(!empty($r->res_code))
+			      foreach ($r->res_code as $in) {
+			        DB::table('fund_resarea')->insert(['fund_id'=>$r->fundID, 'research_area_code'=>$in]);
+			      }
+    		} else {
+    			return 'no';
+    		}
     		return 'ok';
     	} catch (Exception $e) {
     		return 'no';

@@ -1,6 +1,32 @@
 document.filtered = true;
 
 
+$('#selectAllButton').click(function(event) {
+	$('[id*="_check"]').prop('checked', this.checked);
+});
+
+$('#resetOrg').click(function(event) {
+	$('#defaultOrg').prop('selected', 'selected');
+	$('select').material_select();
+	var searchString = $('#search').val();
+	AjaxAsk(searchString);
+});
+
+
+$('#expandAll').click(function(event) {
+	$('.collapsible-header').click();
+});
+
+$('#resetCountry').click(function(event) {
+	$('#defaultCountry').prop('selected', 'selected');
+	$('select').material_select();
+	var searchString = $('#search').val();
+	AjaxAsk(searchString);
+});
+
+
+
+
 $('#filter').click(function(event) {
 	document.filtered = !document.filtered;
 	if (document.filtered) {
@@ -88,6 +114,7 @@ function AjaxAsk(searchString){
 		$('#board').empty();
 		$('#board').append(data);
 		    $('ul.tabs').tabs();
+		    $('.collapsible').collapsible();
 
 	})
 	.fail(function() {

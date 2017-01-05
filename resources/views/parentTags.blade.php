@@ -3,7 +3,7 @@
 
 
 @if(isset($m['m']))
-	<select name="tags[]" multiple id="tag" class="col s10">
+	<select name="tags[]" searchable="Search here ..." multiple id="tag" class="col s10">
 				         	@foreach($tags as $tag)
 				         		<option value="{{ $tag->tag_id }}"
 				         		@foreach($arr as $a) 

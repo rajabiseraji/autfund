@@ -41,7 +41,7 @@
             secondaryPlaceholder: '+Tag',
           });
 
-
+          $('.collapsible').collapsible();
 
           $('.button-collapse').sideNav({
               menuWidth: 280, // Default is 240
