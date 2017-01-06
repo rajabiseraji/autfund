@@ -18,7 +18,13 @@
 			@foreach($qq as $r)
 				@if($r->funding_org_name == $funding_org)
 				  <li>
-						    <div class="collapsible-header"><i class="material-icons">filter_drama</i>
+						    <div class="collapsible-header
+						    	@if(!empty($r->comments))
+							    	@if(preg_match('/undone/', $r->comments))
+							    		yellow
+							    	@endif
+						    	@endif
+						    "><i class="material-icons">filter_drama</i>
 						    <div class="row">
 						    	<span class="col s10">{{ $r->fund_id }}  -  {{ $r->fund_name }}</span>
 						    		<a href="{{ url('/tables/'.$r->fund_id.'/delete') }}" class="secondary-content"><i class="material-icons red-text ">delete</i></a>
