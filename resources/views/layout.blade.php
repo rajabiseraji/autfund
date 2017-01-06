@@ -10,7 +10,33 @@
 	      <a href="#" class="brand-logo center">@yield('pageTitle')</a>
 	      <ul id="nav-mobile" class="right hide-on-med-and-down">
 	        <li><a href="/main"><i class="material-icons left">search</i>Search</a></li>
+	        @if(!(Auth::guest()))
 	        <li><a href="/insert"><i class="material-icons left">add</i>Add Table</a></li>
+	        @endif
+	        
+	        @if (Auth::guest())
+                            <li><a href="{{ url('/login') }}">Login</a></li>
+                            {{-- <li><a href="{{ url('/register') }}">Register</a></li> --}}
+                        @else
+                            <li>
+                                <a href="#">
+                                    {{ Auth::user()->name }} 
+                                </a>
+                            </li>
+                               
+                                    <li>
+                                        <a href="{{ url('/logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                             </li>
+              @endif
+
 	      </ul>
 	        @yield('navExtensions')
 	    </div>

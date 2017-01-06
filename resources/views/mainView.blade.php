@@ -1,7 +1,10 @@
+
   
 @extends('layout')
 
 @section('pageTitle')
+	    <script src="{{ asset('js/init.js') }}"></script>
+
 	Search Results
 @endsection
 

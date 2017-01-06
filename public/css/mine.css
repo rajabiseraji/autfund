@@ -11,6 +11,15 @@
 }
 
 
+.disabled{
+    color: black;
+}
+
+[disabled*='disabled']{
+    color: black;
+}
+
+
 
 #tip{
 	line-height: 1.2;

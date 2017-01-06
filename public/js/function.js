@@ -310,7 +310,7 @@ $('#insTag').on('click', function(e){
   var parID = $('#parentID').val();
   var tagTitle = $('#tagTitle').val();
 $.ajax({
-    url: '/home',
+    url: '/tagInsert',
     async: true,
     type: 'POST',
     data: {_token: CSRF_TOKEN, parentID: parID, tagTitle: tagTitle}

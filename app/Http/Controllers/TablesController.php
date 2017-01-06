@@ -1,6 +1,8 @@
 <?php
 
+
 namespace App\Http\Controllers;
+use Auth;
 use DB;
 use Illuminate\Http\Request;
 
@@ -11,6 +13,8 @@ class TablesController extends Controller
 
 
    function oneTable($tableID){
+
+     
       $funds = DB::table('funds')->get(); 
    		$res =  DB::table('research_area')->get();
       $orgs = DB::table('funding_org')->get();
@@ -57,7 +61,13 @@ class TablesController extends Controller
       // return $arr->get();
       $m = [];
       $m['m'] = 'm';
-   		return view('table')->with(compact('arr', 'res', 'country', 'tags', 'funds', 'orgs', 'm'));
+      $disabled = "";
+       if(Auth::guest())
+          $disabled = "disabled";
+       else
+        $disabled = "";
+   		    
+          return view('table')->with(compact('arr', 'res', 'country', 'tags', 'funds', 'orgs', 'm', 'disabled'));
    }
 
 

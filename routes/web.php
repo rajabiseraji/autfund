@@ -23,13 +23,13 @@ Route::post('/main', 'TableMainController@Ajax');
 // Route::post('/tables', 'TablesController@search');
 
 Route::get('/tables/{tableID}', 'TablesController@oneTable');
-Route::get('/tables/{tableID}/teacher', 'TablesController@oneTable');
+// Route::get('/tables/{tableID}/teacher', 'TableTeacherController@show');
 Route::post('/tables/{tableID}/edit', 'TablesController@edit');
 // Route::delete('/tables/')
-Route::get('/tables/{tableID}/delete', 'TablesController@delete');
+Route::get('/tables/{tableID}/delete', 'TablesController@delete')->middleware('auth');
 // Route::get('/tables/{tableID}', 'TablesController@insertTable');
-Route::get('/insert', 'TablesInsertController@show');
-Route::post('/insert', 'TablesInsertController@insert');
+Route::get('/insert', 'TablesInsertController@show')->middleware('auth');
+Route::post('/insert', 'TablesInsertController@insert')->middleware('auth');
 
 
 Route::post('/tagEdit', 'TablesInsertController@tagRename');
@@ -51,4 +51,13 @@ Route::post('/orgSave', 'TableUpdateController@orgSave');
 Route::post('/resSave', 'TableUpdateController@resSave');
 
 
-Route::post('/home', 'TablesInsertController@home');
+Route::post('/tagInsert', 'TablesInsertController@home');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
+
+
+Route::get('/adminPanel', 'HomeController@adminPanel')->middleware('admin');
+Route::post('/userDelete', 'HomeController@userDelete')->middleware('admin');
+Route::post('/userAdd', 'HomeController@userAdd')->middleware('admin');
+

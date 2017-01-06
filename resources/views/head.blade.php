@@ -9,7 +9,6 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/init.js') }}"></script>
 
 
 	<!-- Compiled and minified CSS -->

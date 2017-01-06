@@ -15,7 +15,7 @@
 
 	@section('pageTitle')
 		Table Insert
-
+		<script src="{{ asset('js/init.js') }}"></script>
 		<script src="{{ asset('js/materialize.js') }}"></script>
 	@endsection
 

@@ -3,6 +3,7 @@
 
 @section('pageTitle')
 	Table View and Update
+	<script src="{{ asset('js/init.js') }}"></script>
 @endsection
 
 
@@ -17,9 +18,6 @@
 @section('formHead')
 <div class="card-title col s8 offset-s2"><h2 style="text-align: center">{{ ucfirst(trans($arr[0]->fund_name)) }}</h2><hr></div>
 	<form id="mainForm" method="post" action="/tables/{{ $arr[0]->fund_id }}/edit" class="col s12">
-
-
-
 @endsection
 				@section('fundNameValue' , $arr[0]->fund_name)
 
@@ -152,5 +150,21 @@
 		       		<a href="{{ url('/tables/'.$arr[0]->fund_id.'/delete') }}" class="waves-effect waves-light red btn col s12" >Discard Table</a>
 		       		<button class="waves-effect waves-light btn col s12 disabled" disabled>You're Data is autosaved, no need to press anything :) </button>
 		       		<script type="text/javascript" src="{{ asset('js/updateTable.js') }}"></script>
+		       
+		       		@if($disabled == "disabled")
+						<script type="text/javascript">
+							$('input, textarea').attr('disabled', 'disabled');
+							$('input, textarea').addClass('disabled');
+
+							$('select').attr('disabled', 'disabled');
+							$('select').addClass('disabled');
+
+							$('button').attr('disabled', 'disabled');
+							$('button').addClass('disabled');
+
+							$('[class*="btn"]').attr('disabled', 'disabled');
+							$('[class*="btn"]').addClass('disabled');
+						</script>
+					@endif
 		       @endsection
 	          			

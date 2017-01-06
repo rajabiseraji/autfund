@@ -26,9 +26,12 @@
 						    	@endif
 						    "><i class="material-icons">filter_drama</i>
 						    <div class="row">
-						    	<span class="col s10">{{ $r->fund_id }}  -  {{ $r->fund_name }}</span>
-						    		<a href="{{ url('/tables/'.$r->fund_id.'/delete') }}" class="secondary-content"><i class="material-icons red-text ">delete</i></a>
 						    	
+						    	
+						    	<span class="col s10">{{ $r->fund_id }}  -  {{ $r->fund_name }}</span>
+						    	@if (!(Auth::guest()))
+						    		<a href="{{ url('/tables/'.$r->fund_id.'/delete') }}" class="secondary-content"><i class="material-icons red-text ">delete</i></a>
+						    	@endif
 						    
 							    	<a href="{{ url('/tables/'.$r->fund_id) }}" class="secondary-content"><i class="material-icons green-text">send</i>
 							    	</a>

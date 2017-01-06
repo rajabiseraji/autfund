@@ -77,8 +77,7 @@
 										$("#resSelect option:first").attr('selected','selected');
 										$("#fund_country option:eq(1)").attr('selected','selected');
 										$("#fund_rating").val("1");
-										$("#farsiDesc").val("این جدول کامل نیست و نیاز به کامل سازی دارد، 
-											")
+										$("#farsiDesc").val("این جدول کامل نیست و نیاز به کامل سازی دارد");
 										$("#subbutt").click();
 									});
 								</script>
