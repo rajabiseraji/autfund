@@ -1,5 +1,5 @@
 <?php 
-include './classes/PHPExcel/IOFactory.php';
+include './Classes/PHPExcel/IOFactory.php';
 
 
 
@@ -26,7 +26,7 @@ if(isset($_POST["sub"])) {
 
 $servername = "localhost";
 $username = "root";
-$password = "root";
+$password = "This_is_a_password";
 
     $conn = new PDO("mysql:host=$servername;dbname=aut", $username, $password);
     // set the PDO error mode to exception

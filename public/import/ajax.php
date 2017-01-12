@@ -4,7 +4,7 @@
 
 $servername = "localhost";
 $username = "root";
-$password = "root";
+$password = "This_is_a_password";
    if(!empty($_POST['fund_org_new']) || !empty($_POST['fund_country_new'])){
    		if(empty($_POST['fund_country_existing']))
    			echo 'existing'.$_POST['fund_country_existing'];
