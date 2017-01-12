@@ -98,6 +98,9 @@ function AjaxAsk(searchString){
     var memoIsChecked = $('#fund_memo_check').is(':checked');
     var farsiIsChecked = $('#fund_farsi_check').is(':checked');
     var commentsIsChecked = $('#fund_comments_check').is(':checked');
+    $('#board .card-header').hide();
+    $('#board > .row').hide();
+    $('#loadResults').show();
 	$.ajax({
 		url: '/main',
 		type: 'post',
@@ -109,6 +112,9 @@ function AjaxAsk(searchString){
 				},
 	})
 	.done(function(data) {
+		$('#loadResults').hide();
+		$('#board > .row').show();
+		$('#board .card-header').show();
 		console.log("success");
 		// console.log(data);
 		$('#board').empty();
@@ -119,9 +125,12 @@ function AjaxAsk(searchString){
 	})
 	.fail(function() {
 		console.log("error");
+		$('#loadResults').hide();
+		$('#board > .row').show();
+		$('#board .card-header').show();
 	})
 	.always(function() {
-		console.log("complete");
+		
 	});
 
 

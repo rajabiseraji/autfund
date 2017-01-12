@@ -62,6 +62,7 @@
 		</div>
 		<div class="row">
 			<div id="board" class="card col s12 " style="font-size: 30px">
+			<div id="loadResults" class="col s12" style="display: none; text-align: center;margin-top: 20%"><img src="/38.gif" ></div>
 				@yield('board')
  			</div>
 		</div>
