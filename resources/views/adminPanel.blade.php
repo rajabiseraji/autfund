@@ -135,7 +135,7 @@
                           <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
 
 
-                  <a href="http://localhost/AUTINTERNATIONAL/import/" class="btn green btn-large col s8 offset-s2">Import a bunch of tables</a>
+                  <a href="/import" class="btn green btn-large col s8 offset-s2">Import a bunch of tables</a>
 
                 </div>
             </div>
